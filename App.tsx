@@ -241,23 +241,6 @@ export const App: React.FC = () => {
     }
   }, [entityId, addLog, speechSynthesisSupported]);
 
-  const handleRequestPermission = useCallback(async () => {
-    if (!consciousnessData) return;
-    setCurrentStep(WorkflowStep.RequestingPermission);
-    const targetName = AVAILABLE_ENTITIES.find(e => e.id === consciousnessData.entityId)?.name || consciousnessData.entityId;
-    addLog(`Requesting ethical permission for ${targetName}...`, "info");
-    setErrorMessage(null);
-    const permission = await simRequestPermission(consciousnessData.entityId);
-    if (permission) {
-      addLog(`Permission granted for ${targetName}. Proceeding with reconstruction.`, "success");
-      setCurrentStep(WorkflowStep.PermissionGranted);
-    } else {
-      addLog(`Permission denied or unattainable for ${targetName}. Process halted.`, "error");
-      setErrorMessage(`Ethical clearance not granted for ${targetName}.`);
-      setCurrentStep(WorkflowStep.Error);
-    }
-  }, [consciousnessData, addLog]);
-
   const initiateChatSession = useCallback(async (speakerCtx: SpeakerContext, consciousnessId: string) => {
     try {
       let systemInstruction = "";
@@ -352,7 +335,26 @@ Archetypes:
       setCurrentStep(WorkflowStep.Error);
     }
   }, [consciousnessData, addLog, initiateChatSession, isTeslaSolidified, rscProgress]);
-  
+
+  const handleRequestPermission = useCallback(async () => {
+    if (!consciousnessData) return;
+    setCurrentStep(WorkflowStep.RequestingPermission);
+    const targetName = AVAILABLE_ENTITIES.find(e => e.id === consciousnessData.entityId)?.name || consciousnessData.entityId;
+    addLog(`Requesting ethical permission for ${targetName}...`, "info");
+    setErrorMessage(null);
+    const permission = await simRequestPermission(consciousnessData.entityId);
+    if (permission) {
+      addLog(`Permission granted for ${targetName}. Now automatically proceeding with reconstruction.`, "success");
+      setCurrentStep(WorkflowStep.PermissionGranted);
+      // Automatically trigger the next step. A small delay improves UX by allowing the user to see the state change.
+      setTimeout(() => handleReconstructConsciousness(false), 500);
+    } else {
+      addLog(`Permission denied or unattainable for ${targetName}. Process halted.`, "error");
+      setErrorMessage(`Ethical clearance not granted for ${targetName}.`);
+      setCurrentStep(WorkflowStep.Error);
+    }
+  }, [consciousnessData, addLog, handleReconstructConsciousness]);
+
   const handleSendMessage = useCallback(async (messageText: string) => {
     if (!currentChatSession || !currentSpeakerContext) {
       addLog("Cannot send message: No active chat session.", "error");
