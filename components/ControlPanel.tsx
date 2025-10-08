@@ -10,7 +10,6 @@ interface ControlPanelProps {
   onActivatePortal: () => void;
   onRetrieveConsciousness: () => void;
   onRequestPermission: () => void;
-  onReconstructConsciousness: () => void;
   onResetWorkflow: () => void;
   isTeslaEventActive?: boolean;
   perfectionAchieved?: boolean; 
@@ -39,7 +38,6 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   onActivatePortal,
   onRetrieveConsciousness,
   onRequestPermission,
-  onReconstructConsciousness,
   onResetWorkflow,
   isTeslaEventActive,
   perfectionAchieved,
@@ -48,7 +46,6 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   const isIdle = currentStep === WorkflowStep.Idle;
   const isPortalActive = currentStep === WorkflowStep.PortalActive;
   const isConsciousnessRetrieved = currentStep === WorkflowStep.ConsciousnessRetrieved;
-  const isPermissionGranted = currentStep === WorkflowStep.PermissionGranted;
   const isReconstructionComplete = currentStep === WorkflowStep.ReconstructionComplete;
   const isError = currentStep === WorkflowStep.Error;
   const inProgress = currentStep === WorkflowStep.PortalActivating || 
@@ -103,9 +100,6 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             <Button onClick={onRequestPermission} disabled={inProgress || controlsDisabled}>Request Ethical Permission</Button>
           )}
 
-          {isPermissionGranted && (
-            <Button onClick={onReconstructConsciousness} disabled={inProgress || controlsDisabled}>Reconstruct Consciousness</Button>
-          )}
         </div>
       )}
 

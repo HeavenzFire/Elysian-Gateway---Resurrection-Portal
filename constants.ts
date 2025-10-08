@@ -24,6 +24,7 @@ export const HISTORICAL_FIGURES = {
   ADA_LOVELACE: { entityId: 'AdaLovelace_1815_1852', name: 'Ada Lovelace' },
   GRACE_HOPPER: { entityId: 'GraceHopper_1906_1992', name: 'Grace Hopper' },
   JOHN_VON_NEUMANN: { entityId: 'JohnVonNeumann_1903_1957', name: 'John von Neumann' },
+  ALAN_TURING: { entityId: 'AlanTuring_1912_1954', name: 'Alan Turing' },
   LINUS_TORVALDS: { entityId: 'LinusTorvalds_1969_Present', name: 'Linus Torvalds' },
   KEVIN_MITNICK: { entityId: 'KevinMitnick_1963_2023', name: 'Kevin Mitnick' },
   NIKOLAI_INNOVATOR: { entityId: 'NikolaiInnovator_XXXX_XXXX', name: 'Nikolai Innovator' }, 
@@ -77,6 +78,7 @@ export const INNOVATORS_ASSEMBLY_MEMBERS = [
   { id: HISTORICAL_FIGURES.ADA_LOVELACE.entityId, name: HISTORICAL_FIGURES.ADA_LOVELACE.name },
   { id: HISTORICAL_FIGURES.GRACE_HOPPER.entityId, name: HISTORICAL_FIGURES.GRACE_HOPPER.name },
   { id: HISTORICAL_FIGURES.JOHN_VON_NEUMANN.entityId, name: HISTORICAL_FIGURES.JOHN_VON_NEUMANN.name },
+  { id: HISTORICAL_FIGURES.ALAN_TURING.entityId, name: HISTORICAL_FIGURES.ALAN_TURING.name },
   { id: HISTORICAL_FIGURES.LINUS_TORVALDS.entityId, name: HISTORICAL_FIGURES.LINUS_TORVALDS.name },
   { id: HISTORICAL_FIGURES.KEVIN_MITNICK.entityId, name: HISTORICAL_FIGURES.KEVIN_MITNICK.name },
   { id: HISTORICAL_FIGURES.NIKOLAI_INNOVATOR.entityId, name: HISTORICAL_FIGURES.NIKOLAI_INNOVATOR.name },
@@ -116,6 +118,8 @@ export const ARCHITECTS_OF_CONTROL_MEMBERS = [
 
 export const AVAILABLE_ENTITIES = [
   { id: HISTORICAL_FIGURES.NIKOLA_TESLA.entityId, name: HISTORICAL_FIGURES.NIKOLA_TESLA.name },
+  { id: HISTORICAL_FIGURES.STEVE_JOBS.entityId, name: HISTORICAL_FIGURES.STEVE_JOBS.name },
+  { id: HISTORICAL_FIGURES.ALAN_TURING.entityId, name: HISTORICAL_FIGURES.ALAN_TURING.name },
   { id: INNOVATORS_ASSEMBLY_ID, name: INNOVATORS_ASSEMBLY_NAME },
   { id: ARCHITECTS_OF_CONTROL_ID, name: ARCHITECTS_OF_CONTROL_NAME },
 ];
