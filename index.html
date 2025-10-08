@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elysian Gateway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Global styles and animations */
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Shimmer effect for background */
+      @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+      }
+      .shimmer-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.03) 20%, 
+          rgba(255, 255, 255, 0.06) 40%,
+          rgba(255, 255, 255, 0.03) 60%,
+          transparent 80%,
+          transparent 100%);
+        background-size: 2000px 100%;
+        animation: shimmer 15s linear infinite;
+        pointer-events: none; /* Ensure it doesn't interfere with interactions */
+      }
+      
+      /* Floating animation for stars */
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      /* Stronger pulse for key elements */
+      @keyframes pulse-strong {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(1.03); }
+      }
+      .animate-pulse-strong {
+        animation: pulse-strong 2s infinite ease-in-out;
+      }
+      
+      /* Slower spin for portal rings */
+      .animate-spin-slow {
+        animation: spin 20s linear infinite; /* spin is a default tailwind keyframe */
+      }
+
+      /* Custom scrollbar styling (optional, but good for consistency) */
+      .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: #4b5563 #1f2937; /* thumb track */
+      }
+      .scrollbar-thin::-webkit-scrollbar {
+        width: 8px;
+      }
+      .scrollbar-thin::-webkit-scrollbar-track {
+        background: #1f2937; /* Corresponds to slate-800 or 900 */
+      }
+      .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: #4b5563; /* Corresponds to slate-600 */
+        border-radius: 4px;
+        border: 2px solid #1f2937; /* Creates padding around thumb */
+      }
+
+      /* FadeIn animation (moved from TeslaEventDisplay) */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+
+      /* Placeholder for multi-avatar specific styles if needed */
+      .group-avatar-member {
+        /* Styles for individual members in group display */
+      }
+
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+             animation: {
+              'spin-slow': 'spin 20s linear infinite',
+              'pulse-strong': 'pulse-strong 2s infinite ease-in-out',
+              'float': 'float 5s ease-in-out infinite alternate',
+              'shimmer': 'shimmer 15s linear infinite',
+              'fadeIn': 'fadeIn 0.8s ease-out forwards',
+            },
+            keyframes: {
+              'pulse-strong': {
+                '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+                '50%': { opacity: 0.7, transform: 'scale(1.03)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              shimmer: {
+                '0%': { backgroundPosition: '-1000px 0' },
+                '100%': { backgroundPosition: '1000px 0' },
+              },
+              fadeIn: {
+                from: { opacity: 0, transform: 'translateY(20px)' },
+                to: { opacity: 1, transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.4.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
