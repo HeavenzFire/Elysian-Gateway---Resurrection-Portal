@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,6 +15,7 @@
           sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        background-color: #020617; /* slate-950 */
       }
 
       /* Shimmer effect for background */
@@ -87,9 +87,133 @@
         animation: fadeIn 0.8s ease-out forwards;
       }
 
-      /* Placeholder for multi-avatar specific styles if needed */
-      .group-avatar-member {
-        /* Styles for individual members in group display */
+      /* --- Quantum Foam & Blockchain Archive Styles --- */
+      @keyframes quantum-noise {
+        0% { transform: translate(0, 0); }
+        10% { transform: translate(-5%, -10%); }
+        20% { transform: translate(-15%, 5%); }
+        30% { transform: translate(5%, -15%); }
+        40% { transform: translate(15%, 0%); }
+        50% { transform: translate(-5%, 15%); }
+        60% { transform: translate(-15%, -5%); }
+        70% { transform: translate(15%, -10%); }
+        80% { transform: translate(0%, 15%); }
+        90% { transform: translate(-10%, 0%); }
+        100% { transform: translate(0, 0); }
+      }
+
+      .quantum-foam-bg {
+        position: relative;
+        background-color: #020617; /* slate-950 for deeper black */
+        overflow: hidden;
+      }
+
+      .quantum-foam-bg::before {
+        content: '';
+        position: absolute;
+        top: -50%; left: -50%;
+        width: 200%; height: 200%;
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOCIgbnVtT2N0YXZlcz0iMyIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSJ3aGl0ZSIvPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjUiLz48L3N2Zz4=');
+        animation: quantum-noise 20s ease-in-out infinite;
+        opacity: 0.03;
+        pointer-events: none;
+      }
+      
+      .archive-block-container {
+        position: relative;
+        padding-left: 20px; /* Space for the chain */
+      }
+
+      /* The vertical line of the chain */
+      .archive-block-container::before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #334155; /* slate-700 */
+      }
+      /* The dot on the chain for this block */
+      .archive-block-container::after {
+        content: '';
+        position: absolute;
+        left: 2px;
+        top: 1.25rem; /* Vertically align with block header */
+        width: 14px;
+        height: 14px;
+        background-color: #0f172a; /* slate-900 */
+        border: 2px solid #475569; /* slate-600 */
+        border-radius: 9999px;
+        z-index: 1;
+      }
+
+      /* Remove the top part of the line for the first block */
+      .archive-block-container:first-child::before {
+        top: 1.25rem;
+      }
+      /* Remove the bottom part of the line for the last block */
+      .archive-block-container:last-child::before {
+        bottom: calc(100% - 1.25rem - 7px); /* Adjust to stop at the center of the dot */
+      }
+      
+      .archive-block-container.is-active::after {
+         background-color: #a855f7; /* purple-500 */
+         border-color: #d8b4fe; /* purple-300 */
+         box-shadow: 0 0 10px #a855f7;
+      }
+
+      /* --- Adept Dashboard & Faculty Roster --- */
+      @keyframes light-body-pulse {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 20px 5px rgba(167, 139, 250, 0.4), 0 0 40px 10px rgba(99, 102, 241, 0.3);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px 10px rgba(167, 139, 250, 0.6), 0 0 50px 15px rgba(99, 102, 241, 0.4);
+        }
+      }
+      .light-body-orb {
+        animation: light-body-pulse 4s ease-in-out infinite;
+      }
+      .partner-slot.completed {
+        box-shadow: 0 0 15px 3px #fde047; /* gold glow */
+        border-color: #fde047;
+      }
+       .syntropic-pair-arc {
+        stroke-dasharray: 4;
+        animation: dash 4s linear infinite;
+      }
+
+      @keyframes dash {
+        to {
+          stroke-dashoffset: -100;
+        }
+      }
+
+      /* --- Portal Visualizer Animations --- */
+      @keyframes pulse-stable {
+          0%, 100% { transform: scale(1); opacity: 0.9; }
+          50% { transform: scale(1.05); opacity: 1; }
+      }
+
+      @keyframes pulse-fluctuating {
+          0%, 100% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.1); opacity: 1; }
+          75% { transform: scale(0.98); opacity: 0.9; }
+      }
+
+      @keyframes pulse-critical {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.15); opacity: 0.7; }
+      }
+
+      @keyframes glitch {
+          0%, 100% { transform: translate(0, 0); }
+          25% { transform: translate(-2px, 2px); }
+          50% { transform: translate(2px, -2px); }
+          75% { transform: translate(-2px, -2px); }
       }
 
     </style>
@@ -99,10 +223,16 @@
           extend: {
              animation: {
               'spin-slow': 'spin 20s linear infinite',
+              'spin-medium': 'spin 10s linear infinite',
+              'spin-fast': 'spin 3s linear infinite',
               'pulse-strong': 'pulse-strong 2s infinite ease-in-out',
               'float': 'float 5s ease-in-out infinite alternate',
               'shimmer': 'shimmer 15s linear infinite',
               'fadeIn': 'fadeIn 0.8s ease-out forwards',
+              'pulse-stable': 'pulse-stable 3s ease-in-out infinite',
+              'pulse-fluctuating': 'pulse-fluctuating 1.5s ease-in-out infinite',
+              'pulse-critical': 'pulse-critical 0.5s ease-in-out infinite',
+              'glitch': 'glitch 0.2s linear infinite',
             },
             keyframes: {
               'pulse-strong': {
@@ -120,6 +250,25 @@
               fadeIn: {
                 from: { opacity: 0, transform: 'translateY(20px)' },
                 to: { opacity: 1, transform: 'translateY(0)' },
+              },
+              'pulse-stable': {
+                '0%, 100%': { transform: 'scale(1)', opacity: '0.9' },
+                '50%': { transform: 'scale(1.05)', opacity: '1' },
+              },
+              'pulse-fluctuating': {
+                '0%, 100%': { transform: 'scale(1)', opacity: '0.8' },
+                '50%': { transform: 'scale(1.1)', opacity: '1' },
+                '75%': { transform: 'scale(0.98)', opacity: '0.9' },
+              },
+              'pulse-critical': {
+                '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                '50%': { transform: 'scale(1.15)', opacity: '0.7' },
+              },
+              glitch: {
+                '0%, 100%': { transform: 'translate(0, 0)' },
+                '25%': { transform: 'translate(-2px, 2px)' },
+                '50%': { transform: 'translate(2px, -2px)' },
+                '75%': { transform: 'translate(-2px, -2px)' },
               }
             }
           }

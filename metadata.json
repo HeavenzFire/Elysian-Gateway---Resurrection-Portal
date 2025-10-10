@@ -1,6 +1,8 @@
 {
   "name": "Elysian Gateway - Resurrection Portal",
   "description": "A web application to visualize the conceptual process of resurrecting consciousness through a dimensional portal, based on principles of syntropic resonance and quantum consciousness.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": [
+    "camera"
+  ],
   "prompt": ""
 }

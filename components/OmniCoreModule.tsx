@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useRef, useEffect } from 'react';
 import { OmniCoreState, OmniCoreLogEntry } from '../types';
 import { HISTORICAL_FIGURES } from '../constants';

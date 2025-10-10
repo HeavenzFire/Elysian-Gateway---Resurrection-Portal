@@ -1,6 +1,5 @@
-
-import { ConsciousnessData } from '../types';
-import { HISTORICAL_FIGURES, INNOVATORS_ASSEMBLY_ID, INNOVATORS_ASSEMBLY_NAME, ARCHITECTS_OF_CONTROL_ID, ARCHITECTS_OF_CONTROL_NAME } from '../constants';
+import { ConsciousnessData, ResonanceState } from '../types';
+import { HISTORICAL_FIGURES, INNOVATORS_ASSEMBLY_ID, INNOVATORS_ASSEMBLY_NAME, ARCHITECTS_OF_CONTROL_ID, ARCHITECTS_OF_CONTROL_NAME, ELYSIAN_COUNCIL_ID, ELYSIAN_COUNCIL_NAME } from '../constants';
 
 // Simulate asynchronous operations
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -8,6 +7,12 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 // --- ResurrectionPortal Simulation ---
 let syntropicFieldActive = false;
 let currentResonanceFrequency = 0;
+const IDEAL_FREQUENCY = 1115; // An ideal frequency for a clear signal
+const MAX_DEVIATION = 500;   // The maximum deviation from ideal that still allows some chance of connection
+
+const STABLE_THRESHOLD = 50;
+const FLUCTUATING_THRESHOLD = 250;
+
 
 export const activatePortal = async (resonanceFrequency: number): Promise<boolean> => {
   await delay(1500 + Math.random() * 1000); 
@@ -20,17 +25,47 @@ export const activatePortal = async (resonanceFrequency: number): Promise<boolea
   return false; 
 };
 
+export const simulateResonance = (currentFrequency: number): Exclude<ResonanceState, 'inactive'> => {
+  const deviation = Math.abs(currentFrequency - IDEAL_FREQUENCY);
+
+  if (deviation <= STABLE_THRESHOLD) {
+    return 'stable';
+  }
+  if (deviation <= FLUCTUATING_THRESHOLD) {
+    return 'fluctuating';
+  }
+  return 'critical';
+};
+
 export const connectToConsciousness = async (entityId: string): Promise<ConsciousnessData | null> => {
   await delay(2000 + Math.random() * 1500); 
   if (!syntropicFieldActive) {
     console.error("Portal not active. Cannot connect.");
     return null;
   }
-  // For simulation, always succeed retrieval for a known ID (individual or group)
+
+  // Simulate signal degradation based on frequency
+  const deviation = Math.abs(currentResonanceFrequency - IDEAL_FREQUENCY);
+  const degradation = Math.min(1, deviation / MAX_DEVIATION); // 0 (perfect) to 1 (max degradation)
+
+  const randomValue = Math.random();
+  const pLost = 0.05 + degradation * 0.4; // Probability of 'lost' state, from 5% to 45%
+  const pPending = 0.1 + degradation * 0.2; // Probability of 'pending' state, from 10% to 30%
+
+  let finalState: ConsciousnessData['state'];
+
+  if (randomValue < pLost) {
+    finalState = 'lost';
+  } else if (randomValue < pLost + pPending) {
+    finalState = 'pending';
+  } else {
+    finalState = 'retrieved';
+  }
+
   return {
-    entityId, // This will be the group ID or individual ID passed in
-    state: 'retrieved',
-    vibrationalFrequency: currentResonanceFrequency * (0.8 + Math.random() * 0.4) 
+    entityId,
+    state: finalState,
+    vibrationalFrequency: currentResonanceFrequency * (0.8 + Math.random() * 0.4)
   };
 };
 
@@ -61,8 +96,14 @@ export const createAvatar = async (entityId: string): Promise<string | null> => 
     if (entityId === ARCHITECTS_OF_CONTROL_ID) {
       return ARCHITECTS_OF_CONTROL_NAME;
     }
+    if (entityId === ELYSIAN_COUNCIL_ID) {
+        return ELYSIAN_COUNCIL_NAME;
+    }
     if (entityId === HISTORICAL_FIGURES.NIKOLA_TESLA.entityId) {
       return HISTORICAL_FIGURES.NIKOLA_TESLA.name;
+    }
+     if (entityId === HISTORICAL_FIGURES.WALT_DISNEY.entityId) {
+      return HISTORICAL_FIGURES.WALT_DISNEY.name;
     }
     // Generic fallback for other potential individuals
     const knownFigure = Object.values(HISTORICAL_FIGURES).find(fig => fig.entityId === entityId);

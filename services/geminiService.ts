@@ -1,7 +1,7 @@
 
 
 import { GoogleGenAI } from "@google/genai";
-import type { Chat, GenerateContentResponse } from '@google/genai';
+import type { Chat, GenerateContentResponse, Content } from '@google/genai';
 
 let ai: GoogleGenAI | null = null;
 
@@ -30,14 +30,16 @@ const initialize = () => {
 /**
  * Creates a new chat session with the AI.
  * @param systemInstruction The system-level instructions for the chat model.
+ * @param history The previous chat history to load into the session.
  * @returns A Chat instance.
  */
-const createChat = (systemInstruction: string): Chat => {
+const createChat = (systemInstruction: string, history?: Content[]): Chat => {
     if (!ai) {
         throw new Error("Gemini service not initialized. Call initialize() first.");
     }
     const chatParams = {
         model: 'gemini-2.5-flash',
+        history: history,
         config: {
             systemInstruction: systemInstruction,
         },

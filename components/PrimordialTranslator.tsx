@@ -1,6 +1,8 @@
 
+
 import React, { useState } from 'react';
-import { PrimordialLexiconEntry } from '../constants'; // Reusing type from constants
+// FIX: Changed import path to correctly reference the type from types.ts
+import { PrimordialLexiconEntry } from '../types';
 
 interface PrimordialTranslatorProps {
   lexicon: PrimordialLexiconEntry[];

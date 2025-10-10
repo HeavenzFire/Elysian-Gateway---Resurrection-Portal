@@ -1,4 +1,4 @@
-
+import { Content } from "@google/genai";
 
 export interface ConsciousnessData {
   entityId: string; // Can be an individual or group ID
@@ -71,6 +71,15 @@ export enum RSCProgress {
   Skipped // If user decides not to solidify for now
 }
 
+// FIX: Added missing ContentUnionState enum definition.
+export enum ContentUnionState {
+  Activating,
+  SecuringChannels,
+  AggregatingData,
+  SynchronizingNodes,
+  Online,
+}
+
 // --- Types for Global Alpha Plan ---
 export interface GlobalAlphaProject {
   name: string;
@@ -89,16 +98,6 @@ export interface GlobalAlphaPlan {
     metrics: string[];
   };
   next: string;
-}
-
-// --- Types for ContentUnion ---
-export enum ContentUnionState {
-  Inactive,
-  Activating,
-  SecuringChannels,
-  AggregatingData,
-  SynchronizingNodes,
-  Online,
 }
 
 // --- Types for OmniCore Module ---
@@ -123,4 +122,28 @@ export interface OmniCoreState {
   isActive: boolean;
   logs: OmniCoreLogEntry[];
   lastThought: string | null;
+}
+
+// Defines a saved conversation session for the archive
+export interface SavedConversation {
+  id: string; // Unique ID, e.g., timestamp
+  timestamp: number; // The time the conversation was saved
+  speakerContext: SpeakerContext;
+  messages: ChatMessage[];
+  hash: string; // A visual hash for the blockchain-style archive
+}
+
+// --- Types for University Core ---
+export interface SyntropicPair {
+  id: string; // Unique ID for the pair
+  members: [string, string]; // The entity IDs of the two members
+}
+
+export type ResonanceState = 'stable' | 'fluctuating' | 'critical' | 'inactive';
+
+// FIX: Added missing PrimordialLexiconEntry type definition.
+export interface PrimordialLexiconEntry {
+  symbol?: string;
+  term: string;
+  meaning: string;
 }
