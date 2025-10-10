@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 
 // Assuming the type for an entity is { id: string; name: string }

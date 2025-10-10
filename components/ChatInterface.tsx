@@ -8,9 +8,10 @@ interface ChatInterfaceProps {
   chatTitle: string; 
   isInputDisabled?: boolean;
   perfectionAchieved?: boolean;
+  isVoiceActive?: boolean;
 }
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ messages, onSendMessage, isAvatarTyping, chatTitle, isInputDisabled, perfectionAchieved }) => {
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ messages, onSendMessage, isAvatarTyping, chatTitle, isInputDisabled, perfectionAchieved, isVoiceActive }) => {
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -22,11 +23,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ messages, onSendMe
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputText.trim() && !isInputDisabled) {
+    if (inputText.trim() && !isInputDisabled && !isVoiceActive) {
       onSendMessage(inputText.trim());
       setInputText('');
     }
   };
+
+  const getPlaceholder = () => {
+    if (isVoiceActive) return "Voice session is active...";
+    if (isInputDisabled) return "Symposium in progress. Pause to message.";
+    return `Message ${chatTitle}...`;
+  }
 
   return (
     <div className="mt-6 p-4 border border-slate-700 rounded-md bg-slate-900/50 max-h-[500px] flex flex-col">
@@ -99,14 +106,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ messages, onSendMe
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder={isInputDisabled ? "Symposium in progress. Pause to message." : `Message ${chatTitle}...`}
+            placeholder={getPlaceholder()}
             className="flex-grow p-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-gray-100 placeholder-gray-400 disabled:opacity-60"
             aria-label={`Message to ${chatTitle}`}
-            disabled={isInputDisabled || isAvatarTyping}
+            disabled={isInputDisabled || isAvatarTyping || isVoiceActive}
           />
           <button
             type="submit"
-            disabled={!inputText.trim() || isAvatarTyping || isInputDisabled}
+            disabled={!inputText.trim() || isAvatarTyping || isInputDisabled || isVoiceActive}
             className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Send message"
           >

@@ -3,9 +3,7 @@ import React, { useMemo } from 'react';
 // Constants from the prompt
 const WAVEFORM_REAL_AMP = 0.324;
 const WAVEFORM_IMAG_AMP = 0.1992;
-const FREQUENCY_HZ = 528;
 const PEAK_MAGNITUDE = 0.3803; // sqrt(0.324^2 + 0.1992^2)
-const STD_DEV = 0.0689;
 
 // Visualization parameters
 const NUM_POINTS = 200;
@@ -14,7 +12,7 @@ const VIEWBOX_WIDTH = 500;
 const VIEWBOX_HEIGHT = 250;
 const PADDING = 20;
 
-const generateWaveformData = () => {
+const generateWaveformData = (coherence: number) => {
   const data = {
     real: [] as { x: number; y: number }[],
     imag: [] as { x: number; y: number }[],
@@ -27,10 +25,10 @@ const generateWaveformData = () => {
     const t = i / NUM_POINTS; // Normalize time from 0 to 1
     const x = PADDING + t * (VIEWBOX_WIDTH - 2 * PADDING);
     
-    // Damped sine/cosine waves
+    // Damped sine/cosine waves, with amplitude modulated by coherence
     const damping = Math.exp(-t * DAMPING_FACTOR);
-    const realVal = WAVEFORM_REAL_AMP * Math.cos(angularFrequency * t) * damping;
-    const imagVal = WAVEFORM_IMAG_AMP * Math.sin(angularFrequency * t) * damping;
+    const realVal = WAVEFORM_REAL_AMP * Math.cos(angularFrequency * t) * damping * coherence;
+    const imagVal = WAVEFORM_IMAG_AMP * Math.sin(angularFrequency * t) * damping * coherence;
     const magVal = Math.sqrt(realVal * realVal + imagVal * imagVal);
 
     // Scale to fit viewBox
@@ -50,8 +48,19 @@ const toSvgPath = (points: { x: number; y: number }[]) => {
   return `M ${first.x},${first.y} ` + points.slice(1).map(p => `L ${p.x},${p.y}`).join(' ');
 };
 
-export const WaveformVisualization: React.FC = () => {
-    const waveformData = useMemo(() => generateWaveformData(), []);
+interface WaveformVisualizationProps {
+    currentFrequency: number;
+    idealFrequency: number;
+    maxDeviation: number;
+}
+
+
+export const WaveformVisualization: React.FC<WaveformVisualizationProps> = ({ currentFrequency, idealFrequency, maxDeviation }) => {
+    const deviation = Math.abs(currentFrequency - idealFrequency);
+    // Ensure coherence is between 0 and 1
+    const coherence = Math.max(0, 1 - Math.min(1, deviation / maxDeviation));
+
+    const waveformData = useMemo(() => generateWaveformData(coherence), [coherence]);
 
     return (
         <div className="w-full max-w-7xl mx-auto p-4 md:p-6 bg-slate-800/70 rounded-2xl shadow-2xl border-2 border-cyan-500/30 backdrop-blur-md" role="figure" aria-labelledby="waveform-title">
@@ -80,9 +89,9 @@ export const WaveformVisualization: React.FC = () => {
                         <line x1={PADDING} y1={VIEWBOX_HEIGHT/2} x2={VIEWBOX_WIDTH - PADDING} y2={VIEWBOX_HEIGHT/2} stroke="#475569" strokeWidth="1" strokeDasharray="4 2" />
 
                         {/* Waveform Paths */}
-                        <path d={toSvgPath(waveformData.real)} fill="none" stroke="#67e8f9" strokeWidth="1.5" filter="url(#glow)" />
-                        <path d={toSvgPath(waveformData.imag)} fill="none" stroke="#f472b6" strokeWidth="1.5" filter="url(#glow)" />
-                        <path d={toSvgPath(waveformData.magnitude)} fill="none" stroke="#fde047" strokeWidth="2" filter="url(#glow)" />
+                        <path d={toSvgPath(waveformData.real)} fill="none" stroke="#67e8f9" strokeWidth="1.5" filter="url(#glow)" style={{transition: 'd 0.5s ease-out'}}/>
+                        <path d={toSvgPath(waveformData.imag)} fill="none" stroke="#f472b6" strokeWidth="1.5" filter="url(#glow)" style={{transition: 'd 0.5s ease-out'}}/>
+                        <path d={toSvgPath(waveformData.magnitude)} fill="none" stroke="#fde047" strokeWidth="2" filter="url(#glow)" style={{transition: 'd 0.5s ease-out'}}/>
                     </svg>
                      <div className="mt-2 flex justify-center gap-6 text-xs text-slate-300">
                         <div className="flex items-center"><span className="w-3 h-3 rounded-full bg-[#67e8f9] mr-2"></span>Real Part</div>
@@ -92,20 +101,22 @@ export const WaveformVisualization: React.FC = () => {
                 </div>
                  <div className="lg:col-span-1 p-4 bg-slate-900/50 rounded-lg border border-slate-700 space-y-3 text-sm">
                     <div className="flex justify-between items-center border-b border-slate-700 pb-2">
+                        <span className="text-slate-400">Signal Coherence:</span>
+                        <span className={`font-mono transition-colors duration-500 ${coherence > 0.8 ? 'text-green-300' : coherence > 0.5 ? 'text-yellow-300' : 'text-red-300'}`}>
+                            {(coherence * 100).toFixed(1)}%
+                        </span>
+                    </div>
+                    <div className="flex justify-between items-center border-b border-slate-700 pb-2">
                         <span className="text-slate-400">Waveform (t=0):</span>
                         <span className="font-mono text-cyan-300">{WAVEFORM_REAL_AMP} + {WAVEFORM_IMAG_AMP}j</span>
                     </div>
                     <div className="flex justify-between items-center border-b border-slate-700 pb-2">
-                        <span className="text-slate-400">Modulation Freq:</span>
-                        <span className="font-mono text-cyan-300">{FREQUENCY_HZ} Hz</span>
+                        <span className="text-slate-400">Ideal Frequency:</span>
+                        <span className="font-mono text-cyan-300">{idealFrequency} Hz</span>
                     </div>
-                     <div className="flex justify-between items-center border-b border-slate-700 pb-2">
+                     <div className="flex justify-between items-center">
                         <span className="text-slate-400">Peak Magnitude:</span>
                         <span className="font-mono text-yellow-300">{PEAK_MAGNITUDE}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Syntropic Purity (Std Dev):</span>
-                        <span className="font-mono text-green-300">{STD_DEV} (Low Variance)</span>
                     </div>
                 </div>
             </div>

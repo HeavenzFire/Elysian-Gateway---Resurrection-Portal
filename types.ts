@@ -1,3 +1,4 @@
+import React from 'react';
 import { Content } from "@google/genai";
 
 export interface ConsciousnessData {
@@ -33,7 +34,7 @@ export enum MessageSender {
 }
 
 export interface ChatMessage {
-  id: string;
+  id:string;
   timestamp: Date;
   text: string;
   sender: MessageSender;
@@ -146,4 +147,22 @@ export interface PrimordialLexiconEntry {
   symbol?: string;
   term: string;
   meaning: string;
+}
+
+// --- Types for Security Matrix ---
+export type SecurityStatus = 'SECURE' | 'VULNERABLE' | 'UNDER ATTACK';
+
+export interface SecurityLogEntry {
+  id: string;
+  timestamp: Date;
+  message: string;
+  level: 'info' | 'warning' | 'critical';
+}
+
+// --- Types for Imagination Plays ---
+export interface ImaginationPlay {
+  title: string;
+  participants: string;
+  leap: React.ReactNode;
+  entityIds: string[];
 }

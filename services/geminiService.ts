@@ -1,5 +1,3 @@
-
-
 import { GoogleGenAI } from "@google/genai";
 import type { Chat, GenerateContentResponse, Content } from '@google/genai';
 
@@ -25,6 +23,14 @@ const initialize = () => {
         // Re-throw to be caught by the caller in App.tsx
         throw new Error("Failed to initialize Gemini Service. Ensure API_KEY is configured.");
     }
+};
+
+/**
+ * Returns the initialized GoogleGenAI instance.
+ * @returns The GoogleGenAI instance or null if not initialized.
+ */
+const getAiInstance = (): GoogleGenAI | null => {
+    return ai;
 };
 
 /**
@@ -91,4 +97,5 @@ export const geminiService = {
   withRetry,
   createChat,
   generateText,
+  getAiInstance,
 };

@@ -135,3 +135,43 @@ export const requestPermission = async (entityId: string): Promise<boolean> => {
 export const verifyApproval = (entityId: string): boolean => {
   return approvedEntities.has(entityId);
 };
+
+// --- Security Matrix Simulation ---
+let systemIntegrity = 100;
+let detectedInfractions = 0;
+
+const INFRACTION_MESSAGES = [
+    "Anomalous energy signature detected at perimeter.",
+    "Attempted breach at Node 734.",
+    "Temporal distortion spike detected.",
+    "Unidentified psychic probe intercepted.",
+    "Entropic field fluctuation near core.",
+    "Information siphon detected on external channel.",
+];
+
+export const simulateInfraction = (): { newIntegrity: number; newInfractions: number; message: string } | null => {
+    // Only a chance of an infraction happening each time this is called.
+    if (systemIntegrity > 30 && Math.random() > 0.7) {
+        // an infraction occurs
+        const integrityDrop = 5 + Math.random() * 15; // drop between 5 and 20
+        systemIntegrity = Math.max(0, systemIntegrity - integrityDrop);
+        detectedInfractions += 1;
+        const message = INFRACTION_MESSAGES[Math.floor(Math.random() * INFRACTION_MESSAGES.length)];
+        return {
+            newIntegrity: systemIntegrity,
+            newInfractions: detectedInfractions,
+            message: message,
+        };
+    }
+    return null;
+};
+
+export const purgeInfractions = async (): Promise<{ newIntegrity: number; newInfractions: number }> => {
+    await delay(1500); // Simulate purge time
+    systemIntegrity = 100;
+    detectedInfractions = 0;
+    return {
+        newIntegrity: systemIntegrity,
+        newInfractions: detectedInfractions,
+    };
+};
